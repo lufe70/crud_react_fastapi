@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Python: FastAPI",
+        "type": "python",
+        "request": "launch",
+        "module": "uvicorn",
+        "args": ["main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"],
+        "jinja": true,
+        "justMyCode": true,
+        "cwd": "${workspaceFolder}/backend"
+      },
+      {
+        "name": "Launch Chrome against React App",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder}/frontend"
+      }
+    ],
+    "compounds": [
+      {
+        "name": "Full Stack: FastAPI+React",
+        "configurations": ["Python: FastAPI", "Launch Chrome against React App"]
+      }
+    ]
+  }
