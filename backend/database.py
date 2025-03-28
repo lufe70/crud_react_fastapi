@@ -132,3 +132,25 @@ def delete_curso(curso_id: int) -> bool:
     conn.close()
     
     return True
+
+
+def filtrar_cursos_por_nome(nome: str) -> List[Dict[str, Any]]:
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM cursos WHERE nome LIKE ?", [f"%{nome}%"])
+    cursos = cursor.fetchall()
+    conn.close()
+    
+    resultado = []
+    for curso in cursos:
+        resultado.append({
+            "id": curso["id"],
+            "codigo": curso["codigo"],
+            "nome": curso["nome"],
+            "descricao": curso["descricao"],
+            "carga_horaria": curso["carga_horaria"],
+            "periodo": curso["periodo"]
+        })
+    
+    return resultado

@@ -54,3 +54,7 @@ async def deletar_curso(curso_id: int):
     if not database.delete_curso(curso_id):
         raise HTTPException(status_code=404, detail="Curso não encontrado")
     return {"message": "Curso deletado com sucesso"}
+
+@app.get("/cursos/filtro/{nome}")
+async def filtrar_cursos_por_nome(nome: str):
+    return database.filtrar_cursos_por_nome(nome)

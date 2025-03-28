@@ -1,19 +1,28 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import FiltroCursos from '../components/FiltroCursos';
 
 const ListarCursos = () => {
   const [cursos, setCursos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchCursos = async () => {
+  const [filtroNome, setFiltroNome] = useState('');
+  
+  
+    const fetchCursos = async (nome = '') => {
+      setLoading(true);
       try {
-        const response = await fetch('http://localhost:8000/cursos');
+        const url = nome 
+          ? `http://localhost:8000/cursos/filtro/${encodeURIComponent(nome)}`
+          : 'http://localhost:8000/cursos';
+        
+        const response = await fetch(url);
+        
         if (!response.ok) {
           throw new Error('Erro ao carregar cursos');
         }
+        
         const data = await response.json();
         setCursos(data);
         setLoading(false);
@@ -22,9 +31,14 @@ const ListarCursos = () => {
         setLoading(false);
       }
     };
-
+    useEffect(() => {
     fetchCursos();
-  }, []);
+   }, []);
+
+  const handleFiltrar = (nome) => {
+    setFiltroNome(nome);
+    fetchCursos(nome);
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este curso?')) {
@@ -56,6 +70,8 @@ const ListarCursos = () => {
           </Link>
         } 
       />
+      
+      <FiltroCursos onFiltrar={handleFiltrar} />
       
       <div className="card">
         {loading ? (
